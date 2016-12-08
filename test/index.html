@@ -9,22 +9,141 @@
             text-align: center;
             font-family: sans-serif;
         }
-        input.pn{
+        .btn_submit, input.pn, div.notify{
             margin-right: 33.3333%;
             margin-left: 33.3333%;
-            width: 33.333333%;
         }
+        input.pn, div.notify{
+            width: 33.3333%;
+        }
+        input.pn{
+            border:1px solid #ccc!important;
+            padding: 1%;
+        }
+        .btn_submit{
+            float:right!important;
+        }
+        div.notify{
+            text-align: justify;
+            padding: 2%;
+        }
+        table {
+            border-collapse: collapse;
+            border: 0;
+            box-shadow: 1px 2px 3px #ccc;
+            width: 450px;
+        }
+        td, th {
+            border: 1px solid #ccc;
+            font-size: 75%;
+            vertical-align: baseline;
+            padding: 8px 10px;
+        }
+        div.result{
+            padding-left: 20%;
+            padding-right: 20%;
+        }
+        div.result_table, div.result_code{
+            display: inline-block;
+        }
+        div.result_table{}
     </style>
 </head>
 <body>
 <div>
     <h3 class="heading">Validate Phone Number</h3>
-    <input class="" type="hidden" value="validate_phone_number">
-    <input type="text" placeholder="...enter phone number" name="pn" class="pn">
+    <div class="notify"></div>
+    <div class="">
+        <input class="" type="hidden" name="operation" value="validate_phone_number">
+        <p>
+            <input type="text" placeholder="...enter phone number" name="phone_number" class="pn">
+        </p>
+        <p>
+            <input class="btn_submit" type="button" name="submit" value="Submit">
+        </p>
+    </div>
+
+    <div class="result">
+        <div class="result_table"></div>
+        <div class="result_code"></div>
+    </div>
+
 </div>
 </body>
 <script src="asset/js/jquery3.js"></script>
 <script type="application/javascript">
+    function ajax_call(query_string){
+        var result; //holds HTML result
+        $.ajax({
+            beforeSend: function(){
+                //do some stuff here, before sending data to the server
+            },
+            type: 'post',
+            url: 'adapter.php',
+            cache: 'false',
+            data: {
+                phone_number: query_string
+            },
+            dataType: 'json',
+            complete: function(){
+                //do some stuff here... when call is complete
+            },
+            success: function(data){
+                //do some stuff here... when call is successful
+                console.log(data);
+                result = '<table>';
+                result += '<thead><tr><th>Variables</th><th>Values</th></tr>';
+                result += '<tbody>';
+                for (key in data){
+                    if(data.hasOwnProperty(key)){
+                        result += '<tr>';
+                        result += '<td>Phone Number</td>';
+                        result += '<td>'+ data[key]['phone_number'] +'</td></tr>';
+
+                        result += '<tr>';
+                        result += '<td>Network Provider</td>';
+                        result += '<td>'+ data[key]['network_provider'] +'</td></tr>';
+
+                        result += '<tr>';
+                        result += '<td>Network Provider id</td>';
+                        result += '<td>'+ data[key]['np_id'] +'</td></tr>';
+
+                        result += '<tr>';
+                        result += '<td>Phone Number</td>';
+                        result += '<td>'+ data[key]['phone_number'] +'</td></tr>';
+
+                        result += '<tr>';
+                        result += '<td>isError</td>';
+                        result += '<td>'+ data[key]['isError'] +'</td></tr>';
+
+                        result += '<tr>';
+                        result += '<td>Status Code</td>';
+                        result += '<td>'+ data[key]['code'] +'</td></tr>';
+
+                        result += '<tr>';
+                        result += '<td>Status Message</td>';
+                        result += '<td>'+ data[key]['msg'] +'</td></tr>';
+
+                    }
+                }
+
+                result += "</tbody></<table>";
+                //$('div.result_code').html(data);
+                $('div.result_table').html(result);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                //do some stuff here... if there was an error during call
+            }
+        });
+    }
+
+    
+    $(document).ready(function () {
+        $(".btn_submit").click(function () {
+            var qs = $('input[name=phone_number]').val();
+            ajax_call(qs);
+        });
+    });
 
 </script>
 </html>

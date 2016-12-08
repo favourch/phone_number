@@ -158,5 +158,4 @@ class validate_phone_number {
     }
 
 }
- $m = new validate_phone_number();
-var_dump ($m->is_phone_number('09196754332'));
+
