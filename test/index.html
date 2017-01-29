@@ -109,10 +109,6 @@
                         result += '<td>'+ data[key]['np_id'] +'</td></tr>';
 
                         result += '<tr>';
-                        result += '<td>Phone Number</td>';
-                        result += '<td>'+ data[key]['phone_number'] +'</td></tr>';
-
-                        result += '<tr>';
                         result += '<td>isError</td>';
                         result += '<td>'+ data[key]['isError'] +'</td></tr>';
 
@@ -137,7 +133,7 @@
         });
     }
 
-    
+
     $(document).ready(function () {
         $(".btn_submit").click(function () {
             var qs = $('input[name=phone_number]').val();
