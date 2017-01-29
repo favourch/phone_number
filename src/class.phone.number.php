@@ -76,9 +76,12 @@ class validate_phone_number {
     }
 
 
-
-
+    /**
+     * @param $pn : phone number to validate
+     * @return array : The length and clean phone number
+     */
     private function get_length($pn){
+        //remove special chars and alphabets from phone numbers
         $this->pn = $this->remove_char($pn);
 
         $this->result_set[0]['phone_number_length'] = strlen($this->pn);
@@ -100,6 +103,7 @@ class validate_phone_number {
         switch ($this->phone_number_length){
             case 11:
 
+                /** check if the number begins with 0 */
                 if (preg_match("/^0/", $this->pn)){
                     $this->result_set[0]['np_id'] = substr($this->pn, 0, 4);
                     /** replace the leading zero with 234 */
@@ -114,11 +118,12 @@ class validate_phone_number {
 
                 break;
             case 13:
-
+                /** Check if phone number begin with Nigeria country code and is preceded by either 7,8 or 9 */
                 if (preg_match("/234(8|7|9)/", $this->pn)){
                     /**
-                     * number meet condition, append zero to the beginning...
-                     * example country_code-80 becomes country_code-080
+                     * extract network provider id (np_id) then append 0 to it
+                     * example country_code-802 becomes country_code-0802
+                     * (0802 = network provider id (np_id).
                      */
                     $this->result_set[0]['np_id'] = '0'.substr($this->pn, 3, 3);
                     $this->result_set[0]['phone_number'] = $this->pn;
@@ -180,7 +185,7 @@ class validate_phone_number {
                 if($this->pn[0]['np_id'] === $code){
                     $this->result_set[0]['code'] = 200;
                     $this->result_set[0]['msg'] = "Number is a valid number...";
-                    $this->result_set[0]['phone_number'] = $pn[0]['clean_pn'];
+                    $this->result_set[0]['phone_number'] = $this->pn[0]['phone_number'];
                     $this->result_set[0]['network_provider'] = $np;
                     $this->result_set[0]['isError']  = False;
 
