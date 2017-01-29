@@ -12,7 +12,7 @@ class validate_phone_number {
     /** The phone number */
     private $pn;
 
-    const version = "0.0.2";
+    const version = "0.0.3";
 
 
     private $phone_number_length;
@@ -27,7 +27,7 @@ class validate_phone_number {
 
     /** Network provider id as key and the network provider name as value e.g. '0802' => 'AIRTEL_NG' */
     private $np_id = array  (
-        '0803' => 'MTN_NG', '0806' => 'MTN_NG', '0703' => 'MTN_NG', '0706' => 'MTN_NG',
+        '0803' => 'MTN_NG', '0806' => 'MTN_NG', '0703' => 'MTN_NG', '0706' => 'MTN_NG', '0906' => 'MTN_NG',
         '0813' => 'MTN_NG', '0816' => 'MTN_NG', '0810' => 'MTN_NG', '0814' => 'MTN_NG', '0903' => 'MTN_NG',
 
         '0705' => 'GLO_NG', '0815' => 'GLO_NG', '0805' => 'GLO_NG', '0811' => 'GLO_NG', '0905' => 'GLO_NG',
