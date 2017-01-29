@@ -12,7 +12,7 @@ class validate_phone_number {
     /** The phone number */
     private $pn;
 
-    const version = "0.0.1";
+    const version = "0.0.2";
 
 
     private $phone_number_length;
@@ -122,7 +122,6 @@ class validate_phone_number {
                 if (preg_match("/234(8|7|9)/", $this->pn)){
                     /**
                      * extract network provider id (np_id) then append 0 to it
-                     * example country_code-802 becomes country_code-0802
                      * (0802 = network provider id (np_id).
                      */
                     $this->result_set[0]['np_id'] = '0'.substr($this->pn, 3, 3);
@@ -143,6 +142,10 @@ class validate_phone_number {
                 if(preg_match("/234[0-9]{11}/", $this->pn, $matches)){
 
                     if(preg_match("/234[0]/", $matches[0])){
+                        /**
+                         * extract network provider id (np_id) then append 0 to it
+                         * (0802 = network provider id (np_id).
+                         */
                         $this->result_set[0]['np_id'] = substr($this->pn, 3, 4);
                         $this->result_set[0]['phone_number'] = preg_replace("/^2340/", '234', $matches[0]) ;
                         $this->result_set[0]['isError'] = false;
@@ -193,6 +196,7 @@ class validate_phone_number {
                     break;
                 }else{
                     $this->result_set[0]['code'] = 404;
+                    $this->result_set[0]['msg'] = "Network provider not found...";
                     $this->result_set[0]['phone_number'] = $pn[0]['clean_pn'];
                     $this->result_set[0]['network_provider'] = Null;
                     $this->result_set[0]['isError']  = True;
