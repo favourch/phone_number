@@ -1,6 +1,10 @@
 <?php
 /**
+<<<<<<< HEAD
  * @author Ukor Jidechi E. << https://ukorjidechi.com || ukorjidechi@gmail.com >> .
+=======
+ * @author Ukor Jidechi E. << http://www.ukorjidechi.com || ukorjidechi@gmail.com >>
+>>>>>>> 0.3
  * Date: 12/4/16
  * Time: 2:27 AM
  */
@@ -12,8 +16,7 @@ class validate_phone_number {
     /** The phone number */
     private $pn;
 
-    const version = "0.0.4";
-
+    const VERSION = "0.0.4";
 
     private $phone_number_length;
 
