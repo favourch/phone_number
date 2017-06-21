@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Ukor Jidechi E. << http://www.ukorjidechi.com || ukorjidechi@gmail.com >> .
+ * @author Ukor Jidechi E. << https://ukorjidechi.com || ukorjidechi@gmail.com >> .
  * Date: 12/4/16
  * Time: 2:27 AM
  */
@@ -12,7 +12,7 @@ class validate_phone_number {
     /** The phone number */
     private $pn;
 
-    const version = "0.0.3";
+    const version = "0.0.4";
 
 
     private $phone_number_length;
@@ -20,7 +20,15 @@ class validate_phone_number {
 
     /** Holds the list of all network provider */
     private $network_provider = array(
-        'Aitel_NG', 'MTN_NG', 'Etisalat_NG', 'GLO_NG', 'VISAFONE', 'MULTILINKS', 'STARCOMMS', 'ZOOM MOBILE', 'MTEL'
+        'Aitel_NG',
+        'MTN_NG',
+        'Etisalat_NG',
+        'GLO_NG',
+        'VISAFONE',
+        'MULTILINKS',
+        'STARCOMMS',
+        'ZOOM MOBILE',
+        'MTEL'
     );
 
 
@@ -56,17 +64,14 @@ class validate_phone_number {
 
 
     /**
-     * validate_phone_number constructor.
-     * @param $phone_number
+     *
      */
-    function __construct($phone_number) {
-        return $this->is_phone_number($phone_number);
-    }
+    function __construct() {}
 
 
 
     /**
-     * strips all special and numeric character from the phone number
+     * @Description strips all special and numeric character from the phone number
      * @param $pn
      * @return mixed
      */
@@ -76,7 +81,7 @@ class validate_phone_number {
     }
 
 
-    /**
+    /** @Description Get the length of the phone number, returns the length and the cleaner version of the number
      * @param $pn : phone number to validate
      * @return array : The length and clean phone number
      */
@@ -92,7 +97,7 @@ class validate_phone_number {
 
 
     
-    /**
+    /** @Description Validate the format of the cleaner phone number from get_length()
      * @param array $pn_and_length
      * @return array
      */
@@ -101,6 +106,27 @@ class validate_phone_number {
         $this->phone_number_length = $pn_and_length[0]['phone_number_length'];
 
         switch ($this->phone_number_length){
+            case 10:
+
+                /** check if the number begins with 0 */
+                if (preg_match("/^0/", $this->pn)){
+                    $this->result_set[0]['np_id'] = substr($this->pn, 0, 4);
+                    /** replace the leading zero with 234 */
+                    $this->result_set[0]['phone_number'] = '234'.substr($this->pn, 1,10);
+                    $this->result_set[0]['msg'] = "Incomplete";
+                    $this->result_set[0]['isError'] = true;
+                }else{
+                    //add zero (0) to the beginning of the number, treat as case
+                    $this->pn = 0 .$this->pn;
+                    $this->result_set[0]['np_id'] = substr($this->pn, 0, 4);
+                    /** replace the leading zero with 234 */
+                    $this->result_set[0]['phone_number'] = '234'.substr($this->pn, 1,10);
+                    $this->result_set[0]['isError'] = false;
+                }
+
+                return $this->result_set;
+
+                break;
             case 11:
 
                 /** check if the number begins with 0 */
@@ -111,7 +137,6 @@ class validate_phone_number {
                     $this->result_set[0]['isError'] = false;
                 }else{
                     $this->result_set[0]['isError']  = true;
-                    #todo:: remove redundant error message and code
                     $this->result_set[0]['msg'] = "Number should begin with zero";
                     $this->result_set[0]['code'] = "9xx";
                 }
@@ -130,7 +155,6 @@ class validate_phone_number {
                 }else{
                     /** error */
                     $this->result_set[0]['isError']  = true;
-                    #todo:: remove redundant error message and code
                     $this->result_set[0]['msg'] = "Number should begin with zero after country code (234)";
                     $this->result_set[0]['code'] = "9xx";
                 }
@@ -151,23 +175,25 @@ class validate_phone_number {
                         $this->result_set[0]['isError'] = false;
                     }else{
                         $this->result_set[0]['isError']  = true;
-                        #todo:: remove redundant error message and code
                         $this->result_set[0]['msg'] = "Number should begin with zero after country code (234)";
                         $this->result_set[0]['code'] = "9xx";
                     }
                 }else{
                     $this->result_set[0]['isError']  = true;
-                    #todo:: remove redundant error message and code
-                    $this->result_set[0]['msg'] = "Phone number is invalid";
+                    $this->result_set[0]['msg'] = "Too long";
                     $this->result_set[0]['code'] = "9xx";
                 }
 
                 break;
 
             default:
-                $this->result_set[0]['msg'] = "Phone number is not a valid number";
+                if($this->phone_number_length < 10)
+                {
+                    $this->result_set[0]['isError']  = true;
+                    $this->result_set[0]['msg'] = "Too short..";
+                    $this->result_set[0]['code'] = "9xx";
+                }
                 break;
-
         }
 
         return $this->result_set;
@@ -182,12 +208,12 @@ class validate_phone_number {
         $pn = $this->get_length($pn);
         $this->pn = $this->check_format($pn);
 
-        if($this->pn[0]['isError'] !== true){
+        if($this->pn[0]['isError'] != true){
             //no error was found
             foreach ($this->np_id as $code => $np){
                 if($this->pn[0]['np_id'] === $code){
                     $this->result_set[0]['code'] = 200;
-                    $this->result_set[0]['msg'] = "Number is a valid number...";
+                    $this->result_set[0]['msg'] = "Valid";
                     $this->result_set[0]['phone_number'] = $this->pn[0]['phone_number'];
                     $this->result_set[0]['network_provider'] = $np;
                     $this->result_set[0]['isError']  = False;
