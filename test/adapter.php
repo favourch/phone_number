@@ -5,7 +5,7 @@
  * Time: 6:26 AM
  */
 
-require_once ("../src/class.phone.number.php");
+require_once __DIR__."../src/phone_number.php";
 
 if(isset($_POST['phone_number'])){
     $pn = htmlspecialchars($_POST['phone_number']);

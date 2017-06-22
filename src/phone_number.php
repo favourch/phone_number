@@ -1,10 +1,6 @@
 <?php
 /**
-<<<<<<< HEAD
  * @author Ukor Jidechi E. << https://ukorjidechi.com || ukorjidechi@gmail.com >> .
-=======
- * @author Ukor Jidechi E. << http://www.ukorjidechi.com || ukorjidechi@gmail.com >>
->>>>>>> 0.3
  * Date: 12/4/16
  * Time: 2:27 AM
  */
@@ -36,7 +32,10 @@ class validate_phone_number {
 
 
 
-    /** Network provider id as key and the network provider name as value e.g. '0802' => 'AIRTEL_NG' */
+    /** Network provider id as key
+     * and the network provider name as value
+     * e.g. '0802' => 'AIRTEL_NG'
+     */
     private $np_id = array  (
         '0803' => 'MTN_NG', '0806' => 'MTN_NG', '0703' => 'MTN_NG', '0706' => 'MTN_NG', '0906' => 'MTN_NG',
         '0813' => 'MTN_NG', '0816' => 'MTN_NG', '0810' => 'MTN_NG', '0814' => 'MTN_NG', '0903' => 'MTN_NG',
@@ -250,4 +249,3 @@ class validate_phone_number {
     }
 
 }
-
